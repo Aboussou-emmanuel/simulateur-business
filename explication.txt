@@ -1,0 +1,17 @@
+- La Logique de Données (Le Cerveau)
+
+Le projet repose sur une constante JavaScript nommée businessData. Elle simule une base de données en stockant pour chaque secteur :
+
+La marge bénéficiaire (ex: 35% pour l'e-commerce).
+Les coûts fixes (loyer, outils).
+Le panier moyen (prix moyen d'une vente).
+Une liste de suggestions d'activités classées par palier d'investissement.
+
+B. La Réactivité (L'Événementiel)
+
+J'ai mis en place des Event Listeners (input et change) sur tous les champs de saisie.
+Pour que l'utilisateur n'ait pas besoin de cliquer sur un bouton "Calculer". Dès qu'une valeur change, la fonction updateSimulation() est déclenchée, offrant une expérience fluide et moderne.
+
+C. L'Algorithme de Recommandation
+
+C'est la partie la plus "intelligente". Le script prend ton budget et parcourt la liste des suggestions du secteur choisi. Il utilise une boucle qui compare ton capital aux paliers requis pour isoler l'activité la plus ambitieuse que tu peux lancer avec tes moyens.

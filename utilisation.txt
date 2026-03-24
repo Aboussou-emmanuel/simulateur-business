@@ -1,0 +1,7 @@
+   -Comment l'utiliser (Guide Rapide)
+
+Entrée des fonds : Tape par exemple 500.000 dans le capital.
+Sélection du secteur : Choisis "Restauration" ou autres.
+Ajustement : Bouge le curseur des ventes à 50 par exemple.
+Lecture : Regarde la case "Activité recommandée", 
+Le site te dira par exemple : "Ouverture d'un kiosque moderne (Fast-food) de quartier." car ton budget de 500k est suffisant pour ce palier mais trop bas pour un vrai restaurant.

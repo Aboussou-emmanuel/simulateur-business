@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Simulator Pro | Analyse de Rentabilité</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="simulator-container">
+        
+        <section class="setup-section">
+            <header>
+                <span class="badge">Outil Décisionnel</span>
+                <h2>Configuration</h2>
+            </header>
+            
+            <div class="input-group">
+                <label for="budget">Capital de départ (FCFA)</label>
+                <input type="number" id="budget" placeholder="Ex: 1000000" min="0">
+            </div>
+
+            <div class="input-group">
+                <label for="business-type">Secteur d'activité</label>
+                <select id="business-type">
+                    <option value="e-commerce">E-commerce / Vente en ligne</option>
+                    <option value="service">Agence de Services / Freelance</option>
+                    <option value="restauration">Restauration / Fast-Food</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label for="sales-volume">Volume de ventes mensuelles : <span id="sales-value">25</span></label>
+                <input type="range" id="sales-volume" min="1" max="200" value="25">
+                <div class="range-labels">
+                    <span>Min</span>
+                    <span>Max</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="results-section">
+            <header>
+                <h2>Analyse financière</h2>
+            </header>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span>Bénéfice Net / Mois</span>
+                    <strong id="monthly-profit">0 FCFA</strong>
+                </div>
+
+                <div class="stat-card">
+                    <span>Délai de rentabilité (ROI)</span>
+                    <strong id="roi-delay">-- mois</strong>
+                </div>
+            </div>
+
+            <div id="advice-box" class="advice">
+                Veuillez saisir votre budget et le volume de ventes pour obtenir une simulation réaliste.
+            </div>
+
+            <footer class="simulator-footer">
+                <p>Calculé selon les marges moyennes du secteur en 2026.</p>
+            </footer>
+        </section>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
