@@ -3,75 +3,113 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Business Simulator Pro | Analyse de Rentabilité</title>
-    
+    <title>SIMULATEUR-BUSINESS | Simulateur de Business par Aboussou Emmanuel</title>
+    <link rel="shortcut icon" href="image/favvv.jpeg" type="image/x-icon">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <div class="simulator-container">
-        
-        <section class="setup-section">
-            <header>
-                <span class="badge">Outil Décisionnel</span>
-                <h2>Configuration</h2>
-            </header>
+    <nav class="navbar">
+        <div class="logo">BizSim<span>Pro</span></div>
+        <ul class="nav-links">
+            <li><a href="#accueil">Accueil</a></li>
+            <li><a href="#features">Services</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <header id="accueil" class="hero">
+        <div class="hero-content">
+            <span class="badge">Propulsé par Digital Growth CI</span>
+            <h1>Entreprenez avec des <span class="highlight">certitudes</span>.</h1>
+            <p>Analysez la rentabilité de votre futur projet en moins de 60 secondes grâce à notre algorithme intelligent.</p>
+            <button id="start-btn" class="btn-main">Lancer le Simulateur</button>
+        </div>
+    </header>
+
+    <section id="features" class="section-padding">
+        <div class="container">
+            <h2 class="section-title">Comment ça marche ?</h2>
+            <div class="features-grid">
+                <div class="f-card">
+                    <div class="icon">📈</div>
+                    <h3>Calcul de Marges</h3>
+                    <p>Nous intégrons les coûts fixes et variables réels par secteur d'activité.</p>
+                </div>
+                <div class="f-card">
+                    <div class="icon">🚀</div>
+                    <h3>Recommandations</h3>
+                    <p>Le système vous propose l'activité précise la plus adaptée à votre budget.</p>
+                </div>
+                <div class="f-card">
+                    <div class="icon">📅</div>
+                    <h3>Prévision ROI</h3>
+                    <p>Estimez le nombre de mois nécessaires pour récupérer votre mise de départ.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="simulateur" class="section-padding dark-bg" style="display: none;">
+        <div class="container">
+            <h2 class="section-title">Votre Analyse Stratégique</h2>
             
-            <div class="input-group">
-                <label for="budget">Capital de départ (FCFA)</label>
-                <input type="number" id="budget" placeholder="Ex: 1000000" min="0">
-            </div>
-
-            <div class="input-group">
-                <label for="business-type">Secteur d'activité</label>
-                <select id="business-type">
-                    <option value="e-commerce">E-commerce / Vente en ligne</option>
-                    <option value="service">Agence de Services / Freelance</option>
-                    <option value="restauration">Restauration / Fast-Food</option>
-                </select>
-            </div>
-
-            <div class="input-group">
-                <label for="sales-volume">Volume de ventes mensuelles : <span id="sales-value">25</span></label>
-                <input type="range" id="sales-volume" min="1" max="200" value="25">
-                <div class="range-labels">
-                    <span>Min</span>
-                    <span>Max</span>
-                </div>
-            </div>
-        </section>
-
-        <section class="results-section">
-            <header>
-                <h2>Analyse financière</h2>
-            </header>
-
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <span>Bénéfice Net / Mois</span>
-                    <strong id="monthly-profit">0 FCFA</strong>
+            <div class="simulator-wrapper">
+                <div class="setup-section">
+                    <div class="input-group">
+                        <label>Capital disponible (FCFA)</label>
+                        <input type="number" id="budget" placeholder="Ex: 1000000">
+                    </div>
+                    <div class="input-group">
+                        <label>Secteur visé</label>
+                        <select id="business-type">
+                            <option value="e-commerce">E-commerce / Vente en ligne</option>
+                            <option value="service">Agence de Services / Freelance</option>
+                            <option value="restauration">Restauration / Fast-Food</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>Volume de ventes mensuel : <span id="sales-value">25</span></label>
+                        <input type="range" id="sales-volume" min="1" max="250" value="25">
+                    </div>
                 </div>
 
-                <div class="stat-card">
-                    <span>Délai de rentabilité (ROI)</span>
-                    <strong id="roi-delay">-- mois</strong>
+                <div class="results-section">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <span>Bénéfice Net / Mois</span>
+                            <strong id="monthly-profit">0 FCFA</strong>
+                        </div>
+                        <div class="stat-card">
+                            <span>Temps de Rentabilité</span>
+                            <strong id="roi-delay">-- mois</strong>
+                        </div>
+                    </div>
+                    <div id="advice-box" class="advice">
+                        En attente de vos données...
+                    </div>
                 </div>
             </div>
+        </div>
+    </section>
 
-            <div id="advice-box" class="advice">
-                Veuillez saisir votre budget et le volume de ventes pour obtenir une simulation réaliste.
+    <footer id="contact" class="footer">
+        <div class="container">
+            <h3>À propos du concepteur</h3>
+            <p class="bio">Je suis <strong>Aboussou Emmanuel</strong>, fondateur de Digital Growth CI. J'accompagne les porteurs de projets dans leur transformation digitale à Abidjan.</p>
+            
+            <div class="contact-box">
+                <a href="mailto:aboussouemmanuel.webdev@gmail.com" class="contact-link">📧 votre-email@gmail.com</a>
+                <a href="https://wa.me/225" class="contact-link">📞 WhatsApp : +225 XX XX XX XX</a>
             </div>
-
-            <footer class="simulator-footer">
-                <p>Calculé selon les marges moyennes du secteur en 2026.</p>
-            </footer>
-        </section>
-
-    </div>
+            
+            <p class="copyright">© 2026 BizSimPro - Projet Final de Formation Web.</p>
+        </div>
+    </footer>
 
     <script src="script.js"></script>
 </body>

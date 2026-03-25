@@ -1,102 +1,117 @@
-// 1. "Base de données" des secteurs avec marges et exemples concrets
+// DONNÉES DES SECTEURS
 const businessData = {
     "e-commerce": {
-        margin: 0.35, // 35% de marge nette moyenne
-        fixedCosts: 45000, // Frais de livraison, pub, emballage
+        margin: 0.35,
+        fixedCosts: 45000,
         avgTicket: 15000,
         suggestions: [
-            { minCap: 0, activity: "Dropshipping de gadgets tech ou accessoires de mode." },
-            { minCap: 500000, activity: "Vente de mèches ou de vêtements avec stock local à Abidjan." },
-            { minCap: 2000000, activity: "Marque de cosmétiques personnalisée (Private Label)." }
+            { minCap: 0, activity: "Vente d'accessoires via WhatsApp & réseaux sociaux." },
+            { minCap: 300000, activity: "E-commerce avec stock de vêtements ou cosmétiques." },
+            { minCap: 1500000, activity: "Création d'une marque propre (Private Label) Import-Export." }
         ]
     },
     "service": {
-        margin: 0.85, // Très peu de charges variables
-        fixedCosts: 25000, // Internet, abonnements logiciels
-        avgTicket: 60000,
+        margin: 0.85,
+        fixedCosts: 20000,
+        avgTicket: 50000,
         suggestions: [
-            { minCap: 0, activity: "Freelance en Design UI/UX ou Développement Web." },
-            { minCap: 300000, activity: "Agence de Social Media Management avec petite équipe." },
-            { minCap: 1000000, activity: "Cabinet de conseil en stratégie digitale pour PME." }
+            { minCap: 0, activity: "Freelance Design / Community Management." },
+            { minCap: 200000, activity: "Agence de services digitaux pour PME locales." },
+            { minCap: 1000000, activity: "Cabinet de conseil ou formation spécialisée." }
         ]
     },
     "restauration": {
         margin: 0.45,
-        fixedCosts: 120000, // Loyer, gaz, électricité
-        avgTicket: 4500,
+        fixedCosts: 150000,
+        avgTicket: 4000,
         suggestions: [
-            { minCap: 0, activity: "Vente de repas en ligne (Cloud Kitchen) via WhatsApp." },
-            { minCap: 800000, activity: "Ouverture d'un kiosque moderne (Fast-food) de quartier." },
-            { minCap: 5000000, activity: "Restaurant physique avec service en salle et livraison." }
+            { minCap: 0, activity: "Cuisine à domicile (Cloud Kitchen) sur commande." },
+            { minCap: 600000, activity: "Kiosque de fast-food moderne ou Food-truck." },
+            { minCap: 4000000, activity: "Restaurant physique avec salle climatisée." }
         ]
     }
 };
 
-// 2. Fonction principale de calcul
-function updateSimulation() {
-    // Récupération des données du formulaire
-    const budget = parseFloat(document.getElementById('budget').value) || 0;
-    const type = document.getElementById('business-type').value;
-    const volume = parseInt(document.getElementById('sales-volume').value);
+// ÉLÉMENTS DU DOM
+const startBtn = document.getElementById('start-btn');
+const simulatorSection = document.getElementById('simulateur');
+const budgetInput = document.getElementById('budget');
+const typeSelect = document.getElementById('business-type');
+const volumeInput = document.getElementById('sales-volume');
+const volumeValue = document.getElementById('sales-value');
 
-    // Mise à jour de l'affichage du volume (curseur)
-    document.getElementById('sales-value').innerText = volume;
+// 1. GESTION DE L'AFFICHAGE DU SIMULATEUR
+startBtn.addEventListener('click', () => {
+    simulatorSection.style.display = 'block';
+    simulatorSection.classList.add('fade-in');
 
-    const config = businessData[type];
+    // Scroll fluide
+    simulatorSection.scrollIntoView({ behavior: 'smooth' });
 
-    // Calculs financiers
-    const chiffreAffaire = volume * config.avgTicket;
-    const chargesVariables = chiffreAffaire * (1 - config.margin);
-    const profitMensuel = chiffreAffaire - chargesVariables - config.fixedCosts;
+    // Désactivation du bouton pour éviter les doublons
+    startBtn.innerText = "Simulateur Actif";
+    startBtn.style.opacity = "0.5";
+    startBtn.style.pointerEvents = "none";
+});
 
-    // Affichage du profit avec formatage monétaire
+// 2. FONCTION DE CALCUL
+function calculate() {
+    const budget = parseFloat(budgetInput.value) || 0;
+    const type = typeSelect.value;
+    const volume = parseInt(volumeInput.value);
+
+    // Maj affichage curseur
+    volumeValue.innerText = volume;
+
+    const data = businessData[type];
+
+    // Formules
+    const ca = volume * data.avgTicket;
+    const profit = (ca * data.margin) - data.fixedCosts;
+
+    // Affichage Profit
     const profitEl = document.getElementById('monthly-profit');
-    profitEl.innerText = new Intl.NumberFormat('fr-FR').format(profitMensuel) + " FCFA";
+    profitEl.innerText = new Intl.NumberFormat('fr-FR').format(Math.round(profit)) + " FCFA";
+    profitEl.style.color = profit > 0 ? "#10b981" : "#ef4444";
 
-    // Couleur du profit (rouge si négatif)
-    profitEl.style.color = profitMensuel > 0 ? "#10b981" : "#ef4444";
-
-    // Calcul du ROI (Délai de rentabilité)
+    // Affichage ROI
     const roiEl = document.getElementById('roi-delay');
-    if (profitMensuel > 0) {
-        const mois = Math.ceil(budget / profitMensuel);
+    if (profit > 0) {
+        const mois = Math.ceil(budget / profit);
         roiEl.innerText = mois + " mois";
-        generateAdvice(budget, config, profitMensuel);
+        updateAdvice(budget, data, profit);
     } else {
-        roiEl.innerText = "Jamais";
-        document.getElementById('advice-box').innerHTML = "<strong>Attention :</strong> Vos charges sont plus élevées que vos revenus. Augmentez le volume de ventes !";
+        roiEl.innerText = "N/A";
+        document.getElementById('advice-box').innerHTML = "🚨 <strong>Attention :</strong> Le volume de ventes est trop faible pour couvrir vos charges fixes.";
     }
 }
 
-// 3. Fonction pour générer le conseil d'activité précis
-function generateAdvice(budget, config, profit) {
-    let activityFound = "Projet générique";
+// 3. GÉNÉRATION DU CONSEIL PERSONNALISÉ
+function updateAdvice(budget, data, profit) {
+    let bestMatch = data.suggestions[0].activity;
 
-    // On parcourt les suggestions pour trouver la plus adaptée au budget
-    // On trie par capital minimum du plus grand au plus petit
-    const sortedSuggestions = config.suggestions.sort((a, b) => b.minCap - a.minCap);
+    // On trie pour prendre la plus grosse activité possible avec le budget
+    const sorted = [...data.suggestions].sort((a, b) => b.minCap - a.minCap);
 
-    for (let item of sortedSuggestions) {
+    for (let item of sorted) {
         if (budget >= item.minCap) {
-            activityFound = item.activity;
+            bestMatch = item.activity;
             break;
         }
     }
 
-    const adviceBox = document.getElementById('advice-box');
-    adviceBox.innerHTML = `
-        <p>💡 <strong>Activité recommandée :</strong> ${activityFound}</p>
+    document.getElementById('advice-box').innerHTML = `
+        <p>💡 <strong>Opportunité identifiée :</strong> ${bestMatch}</p>
         <p style="margin-top:10px; font-size: 0.85rem; color: #94a3b8;">
-            Avec un bénéfice de ${new Intl.NumberFormat('fr-FR').format(profit)} FCFA, 
-            c'est une option solide pour votre budget.
+            Ce modèle permet d'atteindre votre seuil de rentabilité rapidement avec vos ressources actuelles.
         </p>
     `;
 }
 
-// 4. Écouteurs d'événements (Mise à jour automatique)
-document.getElementById('budget').addEventListener('input', updateSimulation);
-document.getElementById('business-type').addEventListener('change', updateSimulation);
-document.getElementById('sales-volume').addEventListener('input', updateSimulation);
+// ÉCOUTEURS
+[budgetInput, typeSelect, volumeInput].forEach(el => {
+    el.addEventListener('input', calculate);
+});
 
-// Lancement d'un calcul initial à vide
-updateSimulation();
+// Initialisation au chargement
+calculate();
